@@ -109,6 +109,24 @@ void build() {
     GP.SUBMIT("Сохранить");
     GP.FORM_END();
     
+    GP.HR(); 
+    GP.FORM_BEGIN("/setting_read");
+    GP.SUBMIT("Считать дат.");
+    GP.FORM_END();
+    GP.FORM_BEGIN("/setting_read_up");
+    GP.SUBMIT("Считать в верх");
+    GP.FORM_END();
+    GP.FORM_BEGIN("/setting_read_mid");
+    GP.SUBMIT("Считать в серед");
+    GP.FORM_END();
+    GP.FORM_BEGIN("/setting_read_down");
+    GP.SUBMIT("Считать в низ");
+    GP.FORM_END();
+    GP.FORM_BEGIN("/setting_read_cube");
+    GP.SUBMIT("Считать в бак");
+    GP.FORM_END();
+    GP.HR(); 
+    
     GP.FORM_BEGIN("/setting_eep_ds_1");
       GP.LABEL("      Датчик низ      ");
       GP.NUMBER("settings_ds_1_1", "1", 0);
@@ -331,6 +349,93 @@ void action() {
     ds18b20_addr[3][6] = ds_1_7;
     ds18b20_addr[3][7] = ds_1_8;
     EEPROM_put();
+  }
+  else if (portal.form("/setting_read")) {
+
+    MicroDS18B20 <D7> sensor;  // Создаем термометр без адреса на пине D2
+    uint8_t address[8];       // Создаем массив для адреса
+
+      if (sensor.readAddress(address)) {  // если успешно, выводим
+      
+      for (uint8_t i = 0; i < 8; i++) {
+        portal.log.print(address[i], HEX);  // Выводим адрес
+        if (i < 7) portal.log.print(", ");
+      }
+
+
+    } else portal.log.println("Not connected");
+  }
+
+  else if (portal.form("/setting_read_up")) {
+
+    MicroDS18B20 <D7> sensor;  // Создаем термометр без адреса на пине D2
+    uint8_t address[8];       // Создаем массив для адреса
+
+      if (sensor.readAddress(address)) {  // если успешно, выводим
+      
+      for (uint8_t i = 0; i < 8; i++) {
+        portal.log.print(address[i], HEX);  // Выводим адрес
+        if (i < 7) portal.log.print(", ");
+        ds18b20_addr[2][i] = address[i];
+        EEPROM_put();
+      }
+
+
+    } else portal.log.println("Not connected");
+  }
+
+    else if (portal.form("/setting_read_mid")) {
+
+    MicroDS18B20 <D7> sensor;  // Создаем термометр без адреса на пине D2
+    uint8_t address[8];       // Создаем массив для адреса
+
+      if (sensor.readAddress(address)) {  // если успешно, выводим
+      
+      for (uint8_t i = 0; i < 8; i++) {
+        portal.log.print(address[i], HEX);  // Выводим адрес
+        if (i < 7) portal.log.print(", ");
+        ds18b20_addr[1][i] = address[i];
+        EEPROM_put();
+      }
+
+
+    } else portal.log.println("Not connected");
+  }
+
+    else if (portal.form("/setting_read_down")) {
+
+    MicroDS18B20 <D7> sensor;  // Создаем термометр без адреса на пине D2
+    uint8_t address[8];       // Создаем массив для адреса
+
+      if (sensor.readAddress(address)) {  // если успешно, выводим
+      
+      for (uint8_t i = 0; i < 8; i++) {
+        portal.log.print(address[i], HEX);  // Выводим адрес
+        if (i < 7) portal.log.print(", ");
+        ds18b20_addr[0][i] = address[i];
+        EEPROM_put();
+      }
+
+
+    } else portal.log.println("Not connected");
+  }
+
+    else if (portal.form("/setting_read_cube")) {
+
+    MicroDS18B20 <D7> sensor;  // Создаем термометр без адреса на пине D2
+    uint8_t address[8];       // Создаем массив для адреса
+
+      if (sensor.readAddress(address)) {  // если успешно, выводим
+      
+      for (uint8_t i = 0; i < 8; i++) {
+        portal.log.print(address[i], HEX);  // Выводим адрес
+        if (i < 7) portal.log.print(", ");
+        ds18b20_addr[3][i] = address[i];
+        EEPROM_put();
+      }
+
+
+    } else portal.log.println("Not connected");
   }
 
   
